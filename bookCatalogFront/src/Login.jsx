@@ -1,7 +1,9 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "./authContext"
 import { getToken, createUser } from "./api"
+import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -10,9 +12,14 @@ const CreateUserInput = () => {
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-
-  const submit = () => {
-    createUser({ username, password, firstName, lastName })
+  
+  const submit = async () => {
+    try {
+      const response = createUser({ username, password, first_name: firstName, last_name: lastName })
+      console.log('user created succesfully:', response)
+    } catch (error){
+      console.error('error creating user', error)
+    }
   }
 
   return (
@@ -60,8 +67,36 @@ function Login() {
   const { auth } = useContext(AuthContext)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const submit = () => {
-    getToken({auth, username, password})
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (auth.accessToken) {
+      fetchUser({ auth })
+        .then(() => {
+          navigate('/')
+        })
+        .catch(error =>{
+          console.log('error')
+        })
+    }
+  }, [auth.accessToken, navigate])
+
+  const submit = async () => {
+    try {
+      getToken({ auth, username, password }).then (response => {
+        
+      })
+      if (token){
+        console.log("login succesful, redirecting to home page")
+
+        navigate("/")
+      }
+      else{
+        console.log('nope, not redirecting.')
+      }
+    } catch (error) {
+      console.error('error logging in', error)
+    }
   }
 
   return (

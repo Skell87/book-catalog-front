@@ -11,7 +11,7 @@ import{
 } from 'react-router-dom'
 
 
-
+import HomePage from './homePage.jsx'
 import Login from './Login'
 import ErrorPage from './ErrorPage'
 import { AuthContext } from './authContext.js'
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <App />,
+        element: <HomePage />,
         errorElement: <ErrorPage />
       },
       {

@@ -2,16 +2,17 @@ import axios from 'axios'
 
 const baseUrl = 'http://127.0.0.1:8000'
 
-export const createUser = ({username, password, firstname, lastname}) => {
+export const createUser = ({username, password, first_name, last_name}) => {
     axios({
         method: 'post',
         url: `${baseUrl}/create_user/`,
         data:{
             username,
             password,
-            first_name: firstname,
-            last_name: lastname,
+            first_name,
+            last_name
         }
+        
     })
     .then(response => {
         console.log('CREATE USER RESPONSE: ', response)
@@ -23,7 +24,7 @@ export const getToken = ({ auth, username, password}) => {
     axios.post(`${baseUrl}/token/`, {
         username,
         password
-    }).then(response => {
+    }).then (response => {
         console.log('get token response', response)
         auth.setAccessToken(response.data.access)
     })
